@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% set active_page = 'instruments' %}
+
+{% block title %}Справочник облигаций{% endblock %}
+
+{% block content %}
+<main class="shell">
+  <div class="intro">
+    <div>
+      <h1>Справочник облигаций</h1>
+      <p>Выберите облигацию, чтобы открыть калькулятор с её ISIN.</p>
+    </div>
+    <span class="data-label"><span></span>{{ 'Тестовые данные' if dataset == 'demo' else 'Рыночный снимок' }}</span>
+  </div>
+
+  {% if instruments %}
+  <ul class="card instrument-list">
+    {% for instrument in instruments %}
+    <li>
+      <div>
+        <strong class="name">{{ instrument.name }}</strong>
+        <span class="isin-id">{{ instrument.isin }} · {{ instrument.currency }}</span>
+        <p class="hint">Номинал {{ instrument.face_value | string | replace('.', ',') }} {{ instrument.currency }} · котировка {{ instrument.quote_percent | string | replace('.', ',') }}% · {{ 'плавающий купон' if instrument.coupon_type == 'floating' else 'фиксированный купон' }}</p>
+      </div>
+      <a class="button button-primary" href="{{ url_for('index', isin=instrument.isin) }}" aria-label="Открыть расчёт для {{ instrument.isin }}">К расчёту</a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="card reference-card"><p>В справочнике пока нет облигаций.</p></div>
+  {% endif %}
+</main>
+{% endblock %}

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Учебный расчёт DV01 для гипотетических сделок с облигациями">
+  <title>{% block title %}Модуль риска{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body{% block body_attributes %}{% endblock %}>
+  <header class="topbar">
+    <div class="topbar-content shell">
+      <a class="brand" href="{{ url_for('index') }}"><span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i></span>Модуль риска</a>
+      <nav aria-label="Разделы">
+        {% for target, label in [('index', 'Расчёт'), ('instruments', 'Справочник'), ('method', 'Методика')] %}
+        <a href="{{ url_for(target) }}"{% if active_page == target %} class="nav-active" aria-current="page"{% endif %}>{{ label }}</a>
+        {% endfor %}
+      </nav>
+    </div>
+  </header>
+  {% block content %}{% endblock %}
+</body>
+</html>
