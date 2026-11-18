@@ -8,7 +8,7 @@ from pathlib import Path
 from .risk import Bond
 
 
-FIXTURES = Path(__file__).resolve().parents[1] / 'docs' / 'static' / 'js' / 'demo-data.js'
+FIXTURES = Path(__file__).with_name('data') / 'demo.json'
 DECIMAL_FIELDS = ('face_value', 'quote_percent', 'fx_to_rub', 'modified_duration', 'convexity')
 
 
@@ -60,9 +60,7 @@ def initialize(path):
                 revision INTEGER NOT NULL
             );
         ''')
-        fixture = FIXTURES.read_text(encoding='utf-8').strip()
-        records = json.loads(fixture.removeprefix('window.bondRiskDemo = ').removesuffix(';'))
-        for record in records:
+        for record in json.loads(FIXTURES.read_text(encoding='utf-8')):
             insert(db, 'demo', decode_bond(record), ignore_existing=True)
 
 
